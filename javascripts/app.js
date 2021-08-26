@@ -20,7 +20,7 @@ const monsterGame = {
   count: 20,
   finished: false,
   monsterReady: true,
-  heroReady: false,
+  heroReady: true,
 
   timer() {
     setInterval(() => {
@@ -37,6 +37,7 @@ const monsterGame = {
 
   init(canvas) {
     this.setCanvas(canvas);
+    this.setAudio();
     this.heroImage = new Image();
     this.heroImage.src = './images/hero.png';
     this.monsterImage = new Image();
@@ -54,6 +55,24 @@ const monsterGame = {
     this.canvasSize.h = 500;
     canvas.setAttribute('width', this.canvasSize.w);
     canvas.setAttribute('height', this.canvasSize.h);
+  },
+
+  setAudio() {
+    this.audio = new Audio();
+    this.audio.src = './audio/battle.mp3';
+    this.audio.play();
+  },
+
+  setmonsterAudio() {
+    this.monsterAudio = new Audio();
+    this.monsterAudio.src = './audio/monster.ogg';
+    this.monsterAudio.play();
+  },
+
+  sethitAudio() {
+    this.hitAudio = new Audio();
+    this.hitAudio.src = './audio/hit.ogg';
+    this.hitAudio.play();
   },
 
   setListeners() {
@@ -91,6 +110,7 @@ const monsterGame = {
   },
 
   reset() {
+    this.setmonsterAudio();
     this.monster.x = 32 + Math.random() * (canvas.width - 64);
     this.monster.y = 32 + Math.random() * (canvas.height - 64);
   },
@@ -126,13 +146,15 @@ const monsterGame = {
   },
 
   drawHero() {
-    this.ctx.drawImage(
-      this.heroImage,
-      this.hero.x,
-      this.hero.y,
-      this.hero.w,
-      this.hero.h
-    );
+    if (this.heroReady) {
+      this.ctx.drawImage(
+        this.heroImage,
+        this.hero.x,
+        this.hero.y,
+        this.hero.w,
+        this.hero.h
+      );
+    }
   },
 
   drawMonster() {
@@ -170,6 +192,7 @@ const monsterGame = {
       this.hero.y <= this.monster.y + 32 &&
       this.monster.y <= this.hero.y + 32
     ) {
+      this.sethitAudio();
       ++this.monstersKill;
       this.reset();
     }

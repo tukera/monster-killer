@@ -19,3 +19,7 @@ To move our hero must use the arrow keys on the keyboard.
 - `←`  Left arrow to move Tommy left
 - `→`  Right arrow to move Tommy Right
 
+
+
+You can find the live demo [here](https://tukera.github.io/monster-killer/)
+
